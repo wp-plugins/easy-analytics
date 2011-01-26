@@ -14,8 +14,8 @@ Allows you to quickly add Google Analytics tracking code to your site. It's craz
 == Installation ==
 
 1. Upload `easy_analytics` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Add your tracking UA-XXXX number in the settings area
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Add your tracking UA-XXXX number in the settings area
 
 == Changelog ==
 
