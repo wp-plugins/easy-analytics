@@ -2,8 +2,8 @@
 Contributors: welcher
 Tags: stats tracking, analytics, Google Analytics
 Requires at least: 2.7
-Tested up to: 3.0
-Stable tag: 1.0
+Tested up to: 3.3
+Stable tag: 2.0
 
 Allows you to quickly add Google Analytics tracking code to your site.
 
@@ -22,3 +22,10 @@ Allows you to quickly add Google Analytics tracking code to your site. It's craz
 
 = 1.0 =
 * Plugin was created
+
+= 1.1 =
+* Added some basic localization
+
+= 2.0 =
+* Updated GA snippet
+* Added optional Site Speed Sample Rate
