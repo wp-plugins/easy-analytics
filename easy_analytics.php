@@ -24,13 +24,6 @@ Copyright 2011  Ryan Welcher  (email : me@ryanwelcher.com)
 */
 
 
-//check version number
-global $wp_version;
-if( !version_compare($wp_version,"2.7",">=") )
-{
-	die("You need at least version 2.7 of Wordpress to use this plugin");
-}
-
 //function to insert GA code
 function ea_insert_bug()
 {
@@ -57,6 +50,7 @@ add_action('wp_footer','ea_insert_bug');
 //register the settings
 function ea_init()
 {
+	load_plugin_textdomain('easy-analytics');
 	register_setting('ea_options','ea_tracking_num');
 }
 
@@ -68,12 +62,12 @@ function ea_option_page()
 	?>
     <div class="wrap">
     <?php screen_icon();?>
-    <h2>Easy Analytics Settings</h2>
+    <h2><?php _e('Easy Analytics Settings','easy-analytics');?></h2>
     <form action="options.php" method="post" id="ea_options_form">
     <?php settings_fields('ea_options'); ?>
-    	<label>Google Analytics Tracking Number</label>
+    	<label><?php _e('Google Analytics Tracking Number','easy-analytics');?></label>
         <input type="text" id="ea_tracking_num" name="ea_tracking_num" value="<?php echo esc_attr(get_option('ea_tracking_num')); ?>" />
-       <input type="submit" name="submit" value="Save Google Tracking Number" />
+       <input type="submit" name="submit" value="<?php _e('Save Google Tracking Number','easy-analytics');?>" />
         </form>
     </div>
 	<?php

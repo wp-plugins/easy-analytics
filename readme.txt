@@ -22,3 +22,6 @@ Allows you to quickly add Google Analytics tracking code to your site. It's craz
 
 = 1.0 =
 * Plugin was created
+
+= 1.1 =
+* Added some basic localization
