@@ -30,18 +30,18 @@ function ea_insert_bug()
 	
 	?>
 	<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '<?php echo esc_attr(get_option('ea_tracking_num')); ?>']);
-  <?php 
-  if (get_option('ea_site_speed') == 1) 
-  {
-	  ?>
-  _gaq.push(['_setSiteSpeedSampleRate', <?php echo esc_attr(get_option('ea_site_speed_sr')); ?>]);
-  <?php
-  }
-  ?>
-  _gaq.push(['_trackPageview']);
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', '<?php echo esc_attr(get_option('ea_tracking_num')); ?>']);
+	<?php if( get_option('ea_domain_name')) : ?>
+     _gaq.push(['_setDomainName', '<?php echo esc_attr(get_option('ea_domain_name')); ?>']);
+	<?php endif;  ?>
+	 <?php
+	 if (get_option('ea_site_speed') == 1) :?>
+	 _gaq.push(['_setSiteSpeedSampleRate', <?php echo esc_attr(get_option('ea_site_speed_sr')); ?>]);
+	 <?php endif;  ?>
+	 _gaq.push(['_trackPageview']);
+  
+  
 
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -63,6 +63,7 @@ function ea_init()
 {
 	load_plugin_textdomain('easy-analytics');
 	register_setting('ea_options','ea_tracking_num','intval');
+	register_setting('ea_options','ea_domain_name');
 	register_setting('ea_options','ea_site_speed');
 	register_setting('ea_options','ea_site_speed_sr', 'intval');
 }
@@ -80,6 +81,8 @@ function ea_option_page()
     <?php settings_fields('ea_options'); ?>
     	<label for="ea_tracking_num"><?php _e('Google Analytics Tracking Number','easy-analytics');?></label>
         <input type="text" id="ea_tracking_num" name="ea_tracking_num" value="<?php echo esc_attr(get_option('ea_tracking_num')); ?>" /><br /><br />
+        <label for="ea_domain_name"><?php _e('_setDomain','easy-analytics');?></label>
+        <input type="text" id="ea_domain_name" name="ea_domain_name" value="<?php echo esc_attr(get_option('ea_domain_name')); ?>" /><br /><br />
          <label for="ea_site_speed"><?php _e('Use Site Speed','easy-analytics');?></label>
          <input type="checkbox" id="ea_site_speed" name="ea_site_speed" value="1" <?php checked('1', get_option('ea_site_speed')); ?> /><br /><br />
          <label for="ea_site_speed_sr"><?php _e('Site Speed Sample Rate','easy-analytics');?></label>
