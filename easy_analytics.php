@@ -62,7 +62,7 @@ add_action('wp_footer','ea_insert_bug');
 function ea_init()
 {
 	load_plugin_textdomain('easy-analytics');
-	register_setting('ea_options','ea_tracking_num','intval');
+	register_setting('ea_options','ea_tracking_num');
 	register_setting('ea_options','ea_domain_name');
 	register_setting('ea_options','ea_site_speed');
 	register_setting('ea_options','ea_site_speed_sr', 'intval');
