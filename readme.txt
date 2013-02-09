@@ -3,7 +3,7 @@ Contributors: welcher
 Tags: stats tracking, analytics, Google Analytics
 Requires at least: 2.7
 Tested up to: 3.5.1
-Stable tag: 2.6
+Stable tag: 3.0
 
 Allows you to quickly add Google Analytics tracking code to your site.
 
