@@ -2,7 +2,7 @@
 Contributors: welcher
 Tags: stats tracking, analytics, Google Analytics
 Requires at least: 2.7
-Tested up to: 3.3.2
+Tested up to: 3.5.1
 Stable tag: 2.6
 
 Allows you to quickly add Google Analytics tracking code to your site.
@@ -35,3 +35,9 @@ Allows you to quickly add Google Analytics tracking code to your site. It's craz
 
 = 2.6 =
 * Fixed a bug that caused the google id to not be stored
+
+= 3.0 =
+* Completely re-written as a class.
+* Removed the Site Speed option.
+* Cleaned up the interface.
+* Added French Language

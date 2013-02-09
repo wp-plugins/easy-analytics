@@ -4,7 +4,7 @@ Plugin Name: Easy Analytics
 Plugin URI: http://www.ryanwelcher.com/work/easy-analytics
 Description: Easily add your Google Analytics tracking snippet to your WordPress site.
 Author: Ryan Welcher
-Version: 2.6
+Version: 3.0
 Author URI: http://www.ryanwelcher.com
 
 Copyright 2011  Ryan Welcher  (email : me@ryanwelcher.com)
@@ -24,82 +24,106 @@ Copyright 2011  Ryan Welcher  (email : me@ryanwelcher.com)
 */
 
 
-//function to insert GA code
-function ea_insert_bug()
-{
+if( ! class_exists( 'EasyAnalytics' ) ):
+
+class EasyAnalytics {
 	
-	?>
-	<script type="text/javascript">
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', '<?php echo esc_attr(get_option('ea_tracking_num')); ?>']);
-	<?php if( get_option('ea_domain_name')) : ?>
-     _gaq.push(['_setDomainName', '<?php echo esc_attr(get_option('ea_domain_name')); ?>']);
-	<?php endif;  ?>
-	 <?php
-	 if (get_option('ea_site_speed') == 1) :?>
-	 _gaq.push(['_setSiteSpeedSampleRate', <?php echo esc_attr(get_option('ea_site_speed_sr')); ?>]);
-	 <?php endif;  ?>
-	 _gaq.push(['_trackPageview']);
-  
-  
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-<?php
+	
+	function __construct() {
+		
+		//setup the actions for the front end
+		add_action('wp_footer',array( &$this, 'ea_action_insert_bug' ) );
+		//admin side
+		//--init the settings
+		add_action('admin_init',array( &$this,'ea_action_init_settings') );
+		//--add the page to the admin area
+		add_action('admin_menu',array( &$this, 'ea_action_init_plugin_page') );
+		
+		
+	}
+	
+	
+	/*
+	 * methods that outputs the actual GA snippet
+	 *
+	**/
+	public function ea_action_insert_bug() {
+		?>
+        <script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', '<?php echo esc_attr(get_option('ea_tracking_num')); ?>']);
+		<?php if( get_option('ea_domain_name')) : ?>
+		_gaq.push(['_setDomainName', '<?php echo esc_attr(get_option('ea_domain_name')); ?>']);
+		<?php endif;  ?>
+		<?php if (get_option('ea_site_speed') == 1) :?>
+		_gaq.push(['_setSiteSpeedSampleRate', <?php echo esc_attr(get_option('ea_site_speed_sr')); ?>]);
+		<?php endif;  ?>
+		(function() {
+			 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+		</script>
+        <?php
+	}
+	
+	
+	/*
+	 * registers settings and plugin text domain
+	**/
+	public function ea_action_init_settings() {
+		
+		load_plugin_textdomain( 'easy-analytics', false, dirname( plugin_basename( __FILE__ ) ) . '/_languages/' );
+		register_setting('ea_options','ea_tracking_num');
+		register_setting('ea_options','ea_domain_name');
+	}
+	
+	/*
+	 * inits the settings page for the plugin
+	**/
+	public function ea_action_init_plugin_page() {
+		
+		add_plugins_page( __('Easy Analytics Settings', 'easy-analytics'), __('Easy Analytics', 'easy-analytics'),'manage_options','ea-admin-options',array( &$this, 'render_ea_plugin_page' ) );
+	}
+	
+	public function render_ea_plugin_page() {
+		?>
+        <div class="wrap">
+			<?php screen_icon();?>
+            <h2><?php _e('Easy Analytics Settings','easy-analytics');?></h2>
+            <br/>
+            <form action="options.php" method="post" id="ea_options_form">
+            <?php settings_fields('ea_options'); ?>
+            <table class="widefat">
+            	<tr>
+                	<td>
+                    	<label for="ea_tracking_num"><?php _e('Google Analytics Tracking Number','easy-analytics');?></label>
+                        <input type="text" id="ea_tracking_num" name="ea_tracking_num" value="<?php echo esc_attr(get_option('ea_tracking_num')); ?>" />
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                    	<label for="ea_domain_name"><?php _e('_setDomain','easy-analytics');?></label>
+                        <input type="text" id="ea_domain_name" name="ea_domain_name" value="<?php echo esc_attr(get_option('ea_domain_name')); ?>" />
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                    	<input type="submit" name="submit" class="button-primary" value="<?php _e('Update','easy-analytics');?>" />
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        <?php
+	
+	}
+	
+	
 }
 
-add_action('wp_footer','ea_insert_bug');
+new EasyAnalytics;
 
-
-//=======================ADMIN CODE
-
-//register the settings
-function ea_init()
-{
-	load_plugin_textdomain('easy-analytics');
-	register_setting('ea_options','ea_tracking_num');
-	register_setting('ea_options','ea_domain_name');
-	register_setting('ea_options','ea_site_speed');
-	register_setting('ea_options','ea_site_speed_sr', 'intval');
-}
-
-add_action('admin_init','ea_init');
-
-//create the form
-function ea_option_page()
-{
-	?>
-    <div class="wrap">
-    <?php screen_icon();?>
-    <h2><?php _e('Easy Analytics Settings','easy-analytics');?></h2>
-    <form action="options.php" method="post" id="ea_options_form">
-    <?php settings_fields('ea_options'); ?>
-    	<label for="ea_tracking_num"><?php _e('Google Analytics Tracking Number','easy-analytics');?></label>
-        <input type="text" id="ea_tracking_num" name="ea_tracking_num" value="<?php echo esc_attr(get_option('ea_tracking_num')); ?>" /><br /><br />
-        <label for="ea_domain_name"><?php _e('_setDomain','easy-analytics');?></label>
-        <input type="text" id="ea_domain_name" name="ea_domain_name" value="<?php echo esc_attr(get_option('ea_domain_name')); ?>" /><br /><br />
-         <label for="ea_site_speed"><?php _e('Use Site Speed','easy-analytics');?></label>
-         <input type="checkbox" id="ea_site_speed" name="ea_site_speed" value="1" <?php checked('1', get_option('ea_site_speed')); ?> /><br /><br />
-         <label for="ea_site_speed_sr"><?php _e('Site Speed Sample Rate','easy-analytics');?></label>
-        <input type="text" id="ea_site_speed_sr" name="ea_site_speed_sr" size="5" maxlength="3" value="<?php echo esc_attr(get_option('ea_site_speed_sr')); ?>" />% *Default is 1%<br />
-       <input type="submit" name="submit" value="<?php _e('Update','easy-analytics');?>" />
-        </form>
-    </div>
-	<?php
-}
-
-//add the setting menu to the plugins section
-function ea_plugin_menu()
-{
-	add_plugins_page('Easy Analytics Settings','Easy Analytics','manage_options','ea-admin-options','ea_option_page');
-}
-add_action('admin_menu','ea_plugin_menu');
-
-//santization methodå
+endif;
 
 ?>
