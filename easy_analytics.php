@@ -4,7 +4,7 @@ Plugin Name: Easy Analytics
 Plugin URI: http://www.ryanwelcher.com/work/easy-analytics
 Description: Easily add your Google Analytics tracking snippet to your WordPress site.
 Author: Ryan Welcher
-Version: 3.0
+Version: 3.1
 Author URI: http://www.ryanwelcher.com
 
 Copyright 2011  Ryan Welcher  (email : me@ryanwelcher.com)
@@ -58,6 +58,7 @@ class EasyAnalytics {
 		<?php if (get_option('ea_site_speed') == 1) :?>
 		_gaq.push(['_setSiteSpeedSampleRate', <?php echo esc_attr(get_option('ea_site_speed_sr')); ?>]);
 		<?php endif;  ?>
+		 _gaq.push(['_trackPageview']);
 		(function() {
 			 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 			 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';

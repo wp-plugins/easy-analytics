@@ -20,24 +20,34 @@ Allows you to quickly add Google Analytics tracking code to your site. It's craz
 
 == Changelog ==
 
-= 1.0 =
-* Plugin was created
-
-= 1.1 =
-* Added some basic localization
-
-= 2.0 =
-* Updated GA snippet
-* Added optional Site Speed Sample Rate
-
-= 2.5 =
-* Added the _setDomain option
-
-= 2.6 =
-* Fixed a bug that caused the google id to not be stored
+= 3.1=
+* bug fix
 
 = 3.0 =
 * Completely re-written as a class.
 * Removed the Site Speed option.
 * Cleaned up the interface.
 * Added French Language
+
+= 2.6 =
+* Fixed a bug that caused the google id to not be stored
+
+= 2.5 =
+* Added the _setDomain option
+
+= 2.0 =
+* Updated GA snippet
+* Added optional Site Speed Sample Rate
+
+= 1.1 =
+* Added some basic localization
+
+= 1.0 =
+* Plugin was created
+
+
+
+
+
+
+
